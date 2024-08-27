@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -142,26 +143,31 @@ class _FoodFilteredListPageState extends State<FoodFilteredListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoListSection(
+    return Column(
       children: [
-        CupertinoTextField(
-          textInputAction: TextInputAction.search,
-          controller: _searchController,
-          placeholder: "Search here",
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 10,
+            left: 20,
+            right: 20,
+          ),
+          child: CupertinoTextField(
+            textInputAction: TextInputAction.search,
+            controller: _searchController,
+            placeholder: "Search here",
+          ),
         ),
-        SingleChildScrollView(
-          child: Builder(builder: (context) {
-            if (filteredFoodList.isEmpty) {
-              return const Text('No food found with this search');
-            }
-            return CupertinoListSection(
+        Expanded(
+          child: SingleChildScrollView(
+            child: CupertinoListSection(
+              backgroundColor: Colors.white,
               children: filteredFoodList.map((Map<String, dynamic> data) {
                 return CupertinoListTile(
                   title: Text(data['name']),
                 );
               }).toList(),
-            );
-          }),
+            ),
+          ),
         )
       ],
     );
