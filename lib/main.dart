@@ -141,21 +141,29 @@ class _FoodFilteredListWidgetState extends State<FoodFilteredListWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: CupertinoTextField(
-            textInputAction: TextInputAction.search,
-            controller: _searchController,
-            placeholder: "Search here",
-          ),
-        ),
-        (filteredFoodList.isNotEmpty)
-            ? Expanded(
-                child: SingleChildScrollView(
-                  child: CupertinoListSection(
-                    topMargin: 0.0,
-                    backgroundColor: Colors.white,
-                    children: filteredFoodList.map((Map<String, dynamic> data) {
+        Expanded(
+          child: SingleChildScrollView(
+            child: CupertinoListSection(
+              header: Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 3.0),
+                child: CupertinoTextField(
+                  textInputAction: TextInputAction.search,
+                  controller: _searchController,
+                  placeholder: "Search",
+                  prefix: const Padding(
+                    padding: EdgeInsets.only(top: 4.0, bottom: 4.0, left: 8.0),
+                    child: Icon(
+                      CupertinoIcons.search,
+                      size: 18.0,
+                      color: CupertinoColors.placeholderText,
+                    ),
+                  ),
+                ),
+              ),
+              topMargin: 0.0,
+              backgroundColor: Colors.white,
+              children: (filteredFoodList.isNotEmpty)
+                  ? filteredFoodList.map((Map<String, dynamic> data) {
                       return CupertinoListTile(
                         title: Text(data['name']),
                         onTap: () {
@@ -169,14 +177,16 @@ class _FoodFilteredListWidgetState extends State<FoodFilteredListWidget> {
                           );
                         },
                       );
-                    }).toList(),
-                  ),
-                ),
-              )
-            : const Padding(
-                padding: EdgeInsets.only(top: 25),
-                child: Text("No results with this search"),
-              )
+                    }).toList()
+                  : [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 25),
+                        child: Text("No results with this search"),
+                      )
+                    ],
+            ),
+          ),
+        )
       ],
     );
   }
