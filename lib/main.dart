@@ -146,39 +146,41 @@ class _FoodFilteredListPageState extends State<FoodFilteredListPage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(
-            top: 10,
-            left: 20,
-            right: 20,
-          ),
+          padding: const EdgeInsets.all(4.0),
           child: CupertinoTextField(
             textInputAction: TextInputAction.search,
             controller: _searchController,
             placeholder: "Search here",
           ),
         ),
-        Expanded(
-          child: SingleChildScrollView(
-            child: CupertinoListSection(
-              backgroundColor: Colors.white,
-              children: filteredFoodList.map((Map<String, dynamic> data) {
-                return CupertinoListTile(
-                  title: Text(data['name']),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => FoodDetailsPage(
-                          name: data['name'],
-                          description: data['description'],
-                        ),
-                      ),
-                    );
-                  },
-                );
-              }).toList(),
-            ),
-          ),
-        )
+        (filteredFoodList.isNotEmpty)
+            ? Expanded(
+                child: SingleChildScrollView(
+                  child: CupertinoListSection(
+                    topMargin: 0.0,
+                    backgroundColor: Colors.white,
+                    children: filteredFoodList.map((Map<String, dynamic> data) {
+                      return CupertinoListTile(
+                        title: Text(data['name']),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => FoodDetailsPage(
+                                name: data['name'],
+                                description: data['description'],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
+              )
+            : const Padding(
+                padding: EdgeInsets.only(top: 25),
+                child: Text("No results with this search"),
+              )
       ],
     );
   }
