@@ -38,11 +38,17 @@ class MyHomePage extends StatelessWidget {
       tabBar: CupertinoTabBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.book),
+            icon: Icon(
+              CupertinoIcons.book,
+              size: 26,
+            ),
             label: 'Menu',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.bookmark),
+            icon: Icon(
+              CupertinoIcons.bookmark,
+              size: 26,
+            ),
             label: 'Book a table',
           ),
         ],
@@ -207,17 +213,19 @@ class FoodDetailsPage extends StatelessWidget {
       navigationBar: CupertinoNavigationBar(
         middle: Text(name),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              description,
-              textAlign: TextAlign.justify,
+      child: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                description,
+                textAlign: TextAlign.justify,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -275,10 +283,10 @@ class _BookTablePageState extends State<BookTablePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
-            'When do you need\nto book a table ?',
+            'When do you need to book a table ?',
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 40),
           DatePickerItem(
             children: <Widget>[
               const Text('Date'),
