@@ -164,6 +164,16 @@ class _FoodFilteredListPageState extends State<FoodFilteredListPage> {
               children: filteredFoodList.map((Map<String, dynamic> data) {
                 return CupertinoListTile(
                   title: Text(data['name']),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => FoodDetailsPage(
+                          name: data['name'],
+                          description: data['description'],
+                        ),
+                      ),
+                    );
+                  },
                 );
               }).toList(),
             ),
@@ -185,16 +195,20 @@ class FoodDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(name),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            name,
-            style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              description,
+              textAlign: TextAlign.justify,
+            ),
           ),
-          const SizedBox(height: 75),
-          Text(description),
         ],
       ),
     );
