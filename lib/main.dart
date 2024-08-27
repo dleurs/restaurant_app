@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
+import 'package:intl/intl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,9 +57,7 @@ class MyHomePage extends StatelessWidget {
         }
         return CupertinoTabView(
           builder: (BuildContext context) {
-            return Center(
-              child: Text('Content of tab $index'),
-            );
+            return const BookTablePage();
           },
         );
       },
@@ -71,16 +70,13 @@ class FoodListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> foodStream =
-        FirebaseFirestore.instance.collection('food').snapshots();
-
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
         middle: Text('Food of the menu'),
       ),
       child: SafeArea(
         child: StreamBuilder<QuerySnapshot>(
-          stream: foodStream,
+          stream: FirebaseFirestore.instance.collection('food').snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
@@ -94,7 +90,7 @@ class FoodListPage extends StatelessWidget {
               return document.data()! as Map<String, dynamic>;
             }).toList();
 
-            return FoodFilteredListPage(
+            return FoodFilteredListWidget(
               foodList: foodList,
             );
           },
@@ -104,15 +100,15 @@ class FoodListPage extends StatelessWidget {
   }
 }
 
-class FoodFilteredListPage extends StatefulWidget {
+class FoodFilteredListWidget extends StatefulWidget {
   final List<Map<String, dynamic>> foodList;
-  const FoodFilteredListPage({super.key, required this.foodList});
+  const FoodFilteredListWidget({super.key, required this.foodList});
 
   @override
-  State<FoodFilteredListPage> createState() => _FoodFilteredListPageState();
+  State<FoodFilteredListWidget> createState() => _FoodFilteredListWidgetState();
 }
 
-class _FoodFilteredListPageState extends State<FoodFilteredListPage> {
+class _FoodFilteredListWidgetState extends State<FoodFilteredListWidget> {
   late TextEditingController _searchController;
   late List<Map<String, dynamic>> filteredFoodList;
 
@@ -212,6 +208,162 @@ class FoodDetailsPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class BookTablePage extends StatefulWidget {
+  const BookTablePage({super.key});
+
+  @override
+  State<BookTablePage> createState() => _BookTablePageState();
+}
+
+class _BookTablePageState extends State<BookTablePage> {
+  DateTime date = DateTime(2024, DateTime.august, 27);
+  DateTime time = DateTime(2024, DateTime.august, 27, 20, 00);
+
+  @override
+  void initState() {
+    final now = DateTime.now();
+    date = now;
+    time = now;
+    super.initState();
+  }
+
+  void _showDialog(Widget child) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => Container(
+        height: 216,
+        padding: const EdgeInsets.only(top: 6.0),
+        // The Bottom margin is provided to align the popup above the system
+        // navigation bar.
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        // Provide a background color for the popup.
+        color: CupertinoColors.systemBackground.resolveFrom(context),
+        // Use a SafeArea widget to avoid system overlaps.
+        child: SafeArea(
+          top: false,
+          child: child,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text('Book a table'),
+      ),
+      child: SafeArea(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'When do you need\nto book a table ?',
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          DatePickerItem(
+            children: <Widget>[
+              const Text('Date'),
+              CupertinoButton(
+                // Display a CupertinoDatePicker in date picker mode.
+                onPressed: () => _showDialog(
+                  CupertinoDatePicker(
+                    initialDateTime: date,
+                    minimumDate: DateTime(2024, DateTime.august, 27),
+                    mode: CupertinoDatePickerMode.date,
+                    use24hFormat: true,
+                    // This shows day of week alongside day of month
+                    showDayOfWeek: true,
+                    // This is called when the user changes the date.
+                    onDateTimeChanged: (DateTime newDate) {
+                      setState(() => date = newDate);
+                    },
+                  ),
+                ),
+                // In this example, the date is formatted manually. You can
+                // use the intl package to format the value based on the
+                // user's locale settings.
+                child: Text(
+                  DateFormat("EEEE dd LLLL yyyy").format(date),
+                  //DateFormat.yMMMMd().format(date),
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          DatePickerItem(
+            children: <Widget>[
+              const Text('Time'),
+              CupertinoButton(
+                // Display a CupertinoDatePicker in time picker mode.
+                onPressed: () => _showDialog(
+                  CupertinoDatePicker(
+                    initialDateTime: time,
+                    mode: CupertinoDatePickerMode.time,
+                    use24hFormat: true,
+                    // This is called when the user changes the time.
+                    onDateTimeChanged: (DateTime newTime) {
+                      setState(() => time = newTime);
+                    },
+                  ),
+                ),
+                // In this example, the time value is formatted manually.
+                // You can use the intl package to format the value based on
+                // the user's locale settings.
+                child: Text(
+                  DateFormat("HH:mm").format(date),
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          CupertinoButton.filled(
+              onPressed: () {}, child: const Text("Book a table"))
+        ],
+      )),
+    );
+  }
+}
+
+class DatePickerItem extends StatelessWidget {
+  const DatePickerItem({super.key, required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: CupertinoColors.inactiveGray,
+            width: 0.0,
+          ),
+          bottom: BorderSide(
+            color: CupertinoColors.inactiveGray,
+            width: 0.0,
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: children,
+        ),
       ),
     );
   }
