@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:dartx/dartx.dart';
 
 part 'table_reservation_entity.freezed.dart';
 part 'table_reservation_entity.g.dart';

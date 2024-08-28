@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:restaurant_app/shared/app_dimensions.dart';
+import 'dart:developer' as developer;
 
 class BookTablePage extends StatefulWidget {
   const BookTablePage({super.key});
@@ -64,7 +65,7 @@ class _BookTablePageState extends State<BookTablePage> {
                   CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
             ),
           ),
-          const SizedBox(height: 40),
+          const Expanded(child: SizedBox.shrink()),
           DatePickerItem(
             children: <Widget>[
               const Text('Date'),
@@ -125,8 +126,16 @@ class _BookTablePageState extends State<BookTablePage> {
           const SizedBox(height: 60),
           Center(
             child: CupertinoButton.filled(
-                onPressed: () {}, child: const Text("Book a table")),
-          )
+                onPressed: () {
+                  String reservedSlotDayId =
+                      DateFormat("yyyy-MM-dd").format(date);
+                  developer.log(reservedSlotDayId);
+                  String reservedSlotHourId = DateFormat("HH").format(time);
+                  developer.log(reservedSlotHourId);
+                },
+                child: const Text("Book a table")),
+          ),
+          const Expanded(flex: 2, child: SizedBox.shrink()),
         ],
       )),
     );

@@ -78,9 +78,10 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                   //placeholder: "Search",
                                 ),
                               ),
-                              CupertinoListSection.insetGrouped(
-                                children: (state.filteredFood.isNotEmpty)
-                                    ? state.filteredFood.map((FoodEntity food) {
+                              (state.filteredFood.isNotEmpty)
+                                  ? CupertinoListSection.insetGrouped(
+                                      children: state.filteredFood
+                                          .map((FoodEntity food) {
                                         return CupertinoListTile(
                                           title: Text(food.name),
                                           trailing:
@@ -97,16 +98,13 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                             );
                                           },
                                         );
-                                      }).toList()
-                                    : [
-                                        const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 25),
-                                          child: Text(
-                                              "No results with this search"),
-                                        )
-                                      ],
-                              ),
+                                      }).toList(),
+                                    )
+                                  : const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 25),
+                                      child: Text("No results found"),
+                                    ),
                             ],
                           );
                       }
