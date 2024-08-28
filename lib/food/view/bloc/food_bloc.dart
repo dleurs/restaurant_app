@@ -43,3 +43,13 @@ class FoodBloc extends Bloc<FoodEvent, FoodState> {
     });
   }
 }
+
+/* 
+stream_transform: ^2.1.0 #To use debounce
+
+EventTransformer<Event> debounce<Event>({
+  Duration duration = const Duration(milliseconds: 200),
+}) {
+  return (events, mapper) => events.debounce(duration).switchMap(mapper);
+} 
+*/

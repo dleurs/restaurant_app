@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:restaurant_app/shared/app_dimensions.dart';
 
 class BookTablePage extends StatefulWidget {
   const BookTablePage({super.key});
@@ -45,16 +46,23 @@ class _BookTablePageState extends State<BookTablePage> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Book a table'),
-      ),
       child: SafeArea(
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'When do you need to book a table ?',
-            textAlign: TextAlign.center,
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 35,
+              bottom: 20,
+              left: appHorizontalPadding,
+              right: appHorizontalPadding,
+            ),
+            child: Text(
+              "Book a table",
+              style:
+                  CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
+            ),
           ),
           const SizedBox(height: 40),
           DatePickerItem(
@@ -106,7 +114,7 @@ class _BookTablePageState extends State<BookTablePage> {
                 // You can use the intl package to format the value based on
                 // the user's locale settings.
                 child: Text(
-                  DateFormat("HH:mm").format(date),
+                  DateFormat("HH:mm").format(time),
                   style: const TextStyle(
                     fontSize: 18.0,
                   ),
@@ -114,9 +122,11 @@ class _BookTablePageState extends State<BookTablePage> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          CupertinoButton.filled(
-              onPressed: () {}, child: const Text("Book a table"))
+          const SizedBox(height: 60),
+          Center(
+            child: CupertinoButton.filled(
+                onPressed: () {}, child: const Text("Book a table")),
+          )
         ],
       )),
     );

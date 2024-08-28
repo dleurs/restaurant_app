@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:restaurant_app/food/domain/food_entity.dart';
 import 'package:restaurant_app/food/view/bloc/food_bloc.dart';
 import 'package:restaurant_app/food/view/food_details_page.dart';
+import 'package:restaurant_app/shared/app_dimensions.dart';
 
 class FoodSearchPage extends StatefulWidget {
   const FoodSearchPage({super.key});
@@ -46,8 +47,8 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                     padding: const EdgeInsets.only(
                       top: 35,
                       bottom: 20,
-                      left: 20,
-                      right: 20,
+                      left: appHorizontalPadding,
+                      right: appHorizontalPadding,
                     ),
                     child: Text(
                       "Menu",
@@ -70,7 +71,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
+                                  horizontal: appHorizontalPadding,
                                 ),
                                 child: CupertinoSearchTextField(
                                   controller: _searchController,
@@ -79,8 +80,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                               ),
                               CupertinoListSection.insetGrouped(
                                 children: (state.filteredFood.isNotEmpty)
-                                    ? state.filteredFood
-                                        .map((FoodEntity food) {
+                                    ? state.filteredFood.map((FoodEntity food) {
                                         return CupertinoListTile(
                                           title: Text(food.name),
                                           trailing:
@@ -91,8 +91,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                                                 builder: (context) =>
                                                     FoodDetailsPage(
                                                   name: food.name,
-                                                  description:
-                                                      food.description,
+                                                  description: food.description,
                                                 ),
                                               ),
                                             );

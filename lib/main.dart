@@ -1,12 +1,17 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:restaurant_app/book_table/book_table_page.dart';
+import 'package:restaurant_app/book_table/view/book_table_page.dart';
 import 'package:restaurant_app/food/view/bloc/food_bloc.dart';
 import 'package:restaurant_app/food/view/food_search_page.dart';
 import 'firebase_options.dart';
+import 'dart:developer' as developer;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,13 +34,30 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AppScaffold extends StatelessWidget {
+class AppScaffold extends StatefulWidget {
   const AppScaffold({super.key, required this.title});
 
   final String title;
 
   @override
+  State<AppScaffold> createState() => _AppScaffoldState();
+}
+
+class _AppScaffoldState extends State<AppScaffold> {
+  @override
   Widget build(BuildContext context) {
+    //TODO dleurs(#no-ticket): Better create UserCubit than inside StatefulWidget, but for simplicity.
+    FirebaseAuth.instance.authStateChanges().listen((User? user) async {
+      if (user == null) {
+        await FirebaseAuth.instance.signInAnonymously();
+      } else {
+        await FirebaseFirestore.instance
+            .collection('user')
+            .doc(user.uid)
+            .set({});
+      }
+    });
+
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: const <BottomNavigationBarItem>[

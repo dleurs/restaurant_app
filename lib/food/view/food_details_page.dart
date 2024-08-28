@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:restaurant_app/shared/app_dimensions.dart';
 
 class FoodDetailsPage extends StatelessWidget {
   final String name;
@@ -24,7 +25,9 @@ class FoodDetailsPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(
+                horizontal: appHorizontalPadding,
+              ),
               child: Text(
                 description,
                 textAlign: TextAlign.justify,
