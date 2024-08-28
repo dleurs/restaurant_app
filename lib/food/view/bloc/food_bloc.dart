@@ -1,0 +1,45 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:restaurant_app/food/domain/food_entity.dart';
+import 'dart:developer' as developer;
+
+part 'food_event.dart';
+part 'food_state.dart';
+part 'food_bloc.freezed.dart';
+
+class FoodBloc extends Bloc<FoodEvent, FoodState> {
+  FoodBloc() : super(const FoodState()) {
+    on<_FoodLoadEvent>((event, emit) async {
+      try {
+        emit(state.copyWith(blocState: BlocState.loading));
+        final snapshot =
+            await FirebaseFirestore.instance.collection('food').get();
+        final List<Map<String, dynamic>> foodListData =
+            snapshot.docs.map((DocumentSnapshot document) {
+          return document.data()! as Map<String, dynamic>;
+        }).toList();
+        final List<FoodEntity> foodList = listDataToEntity(foodListData);
+        emit(state.copyWith(
+          blocState: BlocState.success,
+          allFood: foodList,
+          filteredFood: foodList,
+        ));
+      } catch (e) {
+        developer.log("Issue featching food : $e");
+        emit(state.copyWith(
+          blocState: BlocState.error,
+        ));
+      }
+    });
+    on<_FoodSearchEvent>((event, emit) async {
+      emit(state.copyWith(
+        filteredFood: List.of(state.allFood)
+            .where((foodEntity) => foodEntity.name
+                .toLowerCase()
+                .contains(event.searchText.toLowerCase()))
+            .toList(),
+      ));
+    });
+  }
+}

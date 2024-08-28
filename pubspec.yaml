@@ -21,7 +21,6 @@ dependencies:
   dartx: ^1.2.0 # .isNotNullOrEmpty
   
   flutter_bloc: ^8.1.6
-  stream_transform: ^2.1.0 #To use debounce
   
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0

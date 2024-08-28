@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:restaurant_app/book_table/book_table_page.dart';
+import 'package:restaurant_app/food/view/bloc/food_bloc.dart';
 import 'package:restaurant_app/food/view/food_search_page.dart';
 import 'firebase_options.dart';
-import 'package:intl/intl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,14 +41,14 @@ class AppScaffold extends StatelessWidget {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
-              CupertinoIcons.book,
+              Icons.restaurant_sharp,
               size: 26,
             ),
             label: 'Menu',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              CupertinoIcons.bookmark,
+              CupertinoIcons.book,
               size: 26,
             ),
             label: 'Book a table',
@@ -57,7 +59,10 @@ class AppScaffold extends StatelessWidget {
         if (index == 0) {
           return CupertinoTabView(
             builder: (BuildContext context) {
-              return const FoodSearchPage();
+              return BlocProvider(
+                create: (context) => FoodBloc()..add(const FoodEvent.load()),
+                child: const FoodSearchPage(),
+              );
             },
           );
         }

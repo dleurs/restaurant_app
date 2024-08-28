@@ -13,6 +13,10 @@ class FoodDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
+        padding: const EdgeInsetsDirectional.only(),
+        leading: const CupertinoNavigationBarBackButton(
+          previousPageTitle: "Menu",
+        ),
         middle: Text(name),
       ),
       child: SafeArea(

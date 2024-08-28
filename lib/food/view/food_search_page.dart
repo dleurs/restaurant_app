@@ -1,45 +1,124 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:restaurant_app/food/domain/food_entity.dart';
-import 'package:restaurant_app/food/view/bloc/search_bloc.dart';
-import 'package:restaurant_app/food/view/food_search_list_widget.dart';
+import 'package:restaurant_app/food/view/bloc/food_bloc.dart';
+import 'package:restaurant_app/food/view/food_details_page.dart';
 
-class FoodSearchPage extends StatelessWidget {
+class FoodSearchPage extends StatefulWidget {
   const FoodSearchPage({super.key});
+
+  @override
+  State<FoodSearchPage> createState() => _FoodSearchPageState();
+}
+
+class _FoodSearchPageState extends State<FoodSearchPage> {
+  late TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController(text: '');
+    _searchController.addListener(() {
+      context
+          .read<FoodBloc>()
+          .add(FoodEvent.search(searchText: _searchController.text));
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Food of the menu'),
-      ),
+      backgroundColor: CupertinoColors.systemGroupedBackground,
       child: SafeArea(
-        //TODO dleurs(#3): Best to create GetFoodUsecase, FoodRepository and FoodApi. Reduced for simplicity.
-        //TODO dleurs(#3): No pagination, but could be interesting
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('food').snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return const Center(child: Text('Something went wrong'));
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CupertinoActivityIndicator());
-            }
-            final List<Map<String, dynamic>> foodListData =
-                snapshot.data!.docs.map((DocumentSnapshot document) {
-              return document.data()! as Map<String, dynamic>;
-            }).toList();
-            final List<FoodEntity> foodList = listDataToEntity(foodListData);
-            return BlocProvider<SearchBloc>(
-              create: (context) => SearchBloc(foodList),
-              child: const FoodSearchedListWidget(),
-            );
-          },
+        child: SingleChildScrollView(
+          child: BlocBuilder<FoodBloc, FoodState>(
+            builder: (context, state) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 35,
+                      bottom: 20,
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: Text(
+                      "Menu",
+                      style: CupertinoTheme.of(context)
+                          .textTheme
+                          .navLargeTitleTextStyle,
+                    ),
+                  ),
+                  BlocBuilder<FoodBloc, FoodState>(
+                    builder: (context, state) {
+                      switch (state.blocState) {
+                        case BlocState.init:
+                        case BlocState.loading:
+                          return const Center(
+                              child: CupertinoActivityIndicator());
+                        case BlocState.error:
+                          return const Text("En error occured");
+                        case BlocState.success:
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                ),
+                                child: CupertinoSearchTextField(
+                                  controller: _searchController,
+                                  //placeholder: "Search",
+                                ),
+                              ),
+                              CupertinoListSection.insetGrouped(
+                                children: (state.filteredFood.isNotEmpty)
+                                    ? state.filteredFood
+                                        .map((FoodEntity food) {
+                                        return CupertinoListTile(
+                                          title: Text(food.name),
+                                          trailing:
+                                              const CupertinoListTileChevron(),
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    FoodDetailsPage(
+                                                  name: food.name,
+                                                  description:
+                                                      food.description,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }).toList()
+                                    : [
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 25),
+                                          child: Text(
+                                              "No results with this search"),
+                                        )
+                                      ],
+                              ),
+                            ],
+                          );
+                      }
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
   }
 }
-
