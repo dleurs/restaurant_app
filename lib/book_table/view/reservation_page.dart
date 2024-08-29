@@ -47,21 +47,31 @@ class _ReservationPageState extends State<ReservationPage> {
                   ),
                 );
               case BlocState.success:
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: appHorizontalPadding,
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(width: double.infinity),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          right: appHorizontalPadding,
+                          left: appHorizontalPadding,
+                          top: 50,
+                          bottom: appHorizontalPadding,
+                        ),
+                        child: Text(
+                          "Available tables for ${state.reservedSlotDay} at ${state.reservedSlotHour}h :",
+                          textAlign: TextAlign.justify,
+                        ),
                       ),
-                      child: Text(
-                        "Available tables for ${state.reservedSlotDay} at ${state.reservedSlotHour}h :",
-                        textAlign: TextAlign.justify,
-                      ),
-                    ),
-                    ...state.tablesId
-                        .map((tableId) => BookTableButton(tableId: tableId)),
-                  ],
+                      ...state.tablesId.map((tableId) => Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                            ),
+                            child: BookTableButton(tableId: tableId),
+                          )),
+                    ],
+                  ),
                 );
             }
           },

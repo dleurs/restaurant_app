@@ -19,12 +19,12 @@ class BookTableButton extends StatelessWidget {
         },
         builder: (context, table) {
           if (table == null) {
-            const SizedBox.shrink();
+            return const SizedBox.shrink();
           }
           return Column(
             children: [
-              Text(table!.name),
-              Text("Number of chairs : ${table.numberChair}"),
+              Text(
+                  "Table with ${table.numberChair} chair${(table.numberChair > 1) ? "s" : ""}"),
             ],
           );
         },

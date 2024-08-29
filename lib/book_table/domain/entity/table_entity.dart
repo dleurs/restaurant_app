@@ -8,7 +8,6 @@ part 'table_entity.g.dart';
 class TableEntity with _$TableEntity {
   const factory TableEntity({
     required String id,
-    required String name,
     required int numberChair,
   }) = _TableEntity;
 
@@ -24,7 +23,6 @@ List<TableEntity> tablesDataToEntity(List<Map<String, dynamic>> listData) {
   return listData
       .where((Map<String, dynamic> data) {
         return (data['id'] as String?).isNotNullOrEmpty &&
-            (data['name'] as String?).isNotNullOrEmpty &&
             (data['numberChair'] is int);
       })
       .map((Map<String, dynamic> cleanedData) =>

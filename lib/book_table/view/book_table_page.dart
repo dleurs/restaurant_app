@@ -154,19 +154,23 @@ class _BookTablePageState extends State<BookTablePage> {
                     final String reservedSlotHour =
                         DateFormat("HH").format(time);
                     developer.log(reservedSlotHour);
+                    final tablesCubit = context.read<TablesCubit>();
                     Navigator.of(context).push(
                       CupertinoPageRoute(
-                        builder: (context) => BlocProvider<BookTableCubit>(
-                          create: (context) => BookTableCubit(
-                            reservedSlotDay: reservedSlotDay,
-                            reservedSlotHour: reservedSlotHour,
-                            tablesId: tablesId,
-                          ),
-                          //TODO dleurs(#4): ..getReservations() not triggering, investigate
-                          child: BlocProvider<TablesCubit>(
-                            create: (context) => context.read<TablesCubit>(),
-                            child: const ReservationPage(),
-                          ),
+                        builder: (context) => MultiBlocProvider(
+                          providers: [
+                            BlocProvider(
+                                create: (context) => BookTableCubit(
+                                      reservedSlotDay: reservedSlotDay,
+                                      reservedSlotHour: reservedSlotHour,
+                                      tablesId: tablesId,
+                                    )),
+                            BlocProvider(
+                              //TODO dleurs(#4): This way of passing cubit can be removed with proper navigation system
+                              create: (context) => tablesCubit,
+                            ),
+                          ],
+                          child: const ReservationPage(),
                         ),
                       ),
                     );

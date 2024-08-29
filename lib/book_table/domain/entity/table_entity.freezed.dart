@@ -21,7 +21,6 @@ TableEntity _$TableEntityFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TableEntity {
   String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
   int get numberChair => throw _privateConstructorUsedError;
 
   /// Serializes this TableEntity to a JSON map.
@@ -40,7 +39,7 @@ abstract class $TableEntityCopyWith<$Res> {
           TableEntity value, $Res Function(TableEntity) then) =
       _$TableEntityCopyWithImpl<$Res, TableEntity>;
   @useResult
-  $Res call({String id, String name, int numberChair});
+  $Res call({String id, int numberChair});
 }
 
 /// @nodoc
@@ -59,17 +58,12 @@ class _$TableEntityCopyWithImpl<$Res, $Val extends TableEntity>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
     Object? numberChair = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
               as String,
       numberChair: null == numberChair
           ? _value.numberChair
@@ -87,7 +81,7 @@ abstract class _$$TableEntityImplCopyWith<$Res>
       __$$TableEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, int numberChair});
+  $Res call({String id, int numberChair});
 }
 
 /// @nodoc
@@ -104,17 +98,12 @@ class __$$TableEntityImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
     Object? numberChair = null,
   }) {
     return _then(_$TableEntityImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
               as String,
       numberChair: null == numberChair
           ? _value.numberChair
@@ -127,8 +116,7 @@ class __$$TableEntityImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$TableEntityImpl extends _TableEntity {
-  const _$TableEntityImpl(
-      {required this.id, required this.name, required this.numberChair})
+  const _$TableEntityImpl({required this.id, required this.numberChair})
       : super._();
 
   factory _$TableEntityImpl.fromJson(Map<String, dynamic> json) =>
@@ -137,13 +125,11 @@ class _$TableEntityImpl extends _TableEntity {
   @override
   final String id;
   @override
-  final String name;
-  @override
   final int numberChair;
 
   @override
   String toString() {
-    return 'TableEntity(id: $id, name: $name, numberChair: $numberChair)';
+    return 'TableEntity(id: $id, numberChair: $numberChair)';
   }
 
   @override
@@ -152,14 +138,13 @@ class _$TableEntityImpl extends _TableEntity {
         (other.runtimeType == runtimeType &&
             other is _$TableEntityImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
             (identical(other.numberChair, numberChair) ||
                 other.numberChair == numberChair));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, numberChair);
+  int get hashCode => Object.hash(runtimeType, id, numberChair);
 
   /// Create a copy of TableEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -180,7 +165,6 @@ class _$TableEntityImpl extends _TableEntity {
 abstract class _TableEntity extends TableEntity {
   const factory _TableEntity(
       {required final String id,
-      required final String name,
       required final int numberChair}) = _$TableEntityImpl;
   const _TableEntity._() : super._();
 
@@ -189,8 +173,6 @@ abstract class _TableEntity extends TableEntity {
 
   @override
   String get id;
-  @override
-  String get name;
   @override
   int get numberChair;
 

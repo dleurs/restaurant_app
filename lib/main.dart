@@ -93,7 +93,7 @@ class _AppScaffoldState extends State<AppScaffold> {
           builder: (BuildContext context) {
             return BlocProvider<TablesCubit>(
               create: (context) => TablesCubit(),
-              //TODO dleurs(#4): TablesCubit()..getAllTables() not triggering. To investigate
+              //TODO dleurs(#4): TablesCubit()..getAllTables() not triggering. Can be solved with proper navigation system I think.
               child: const BookTablePage(),
             );
           },
