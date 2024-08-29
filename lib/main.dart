@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:restaurant_app/book_table/view/book_table_page.dart';
+import 'package:restaurant_app/book_table/view/cubit/tables/tables_cubit.dart';
 import 'package:restaurant_app/food/view/bloc/food_bloc.dart';
 import 'package:restaurant_app/food/view/food_search_page.dart';
 import 'firebase_options.dart';
@@ -26,10 +27,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
-      title: 'Flutter Demo',
-      theme: CupertinoThemeData(brightness: Brightness.light),
-      home: AppScaffold(title: 'Restaurant app'),
+    return const ScaffoldMessenger(
+      child: CupertinoApp(
+        title: 'Flutter Demo',
+        theme: CupertinoThemeData(brightness: Brightness.light),
+        home: AppScaffold(title: 'Restaurant app'),
+      ),
     );
   }
 }
@@ -90,7 +93,10 @@ class _AppScaffoldState extends State<AppScaffold> {
         }
         return CupertinoTabView(
           builder: (BuildContext context) {
-            return const BookTablePage();
+            return BlocProvider(
+              create: (context) => TablesCubit()..getAllTables(),
+              child: const BookTablePage(),
+            );
           },
         );
       },

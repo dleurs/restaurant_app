@@ -4,6 +4,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:restaurant_app/food/domain/food_entity.dart';
 import 'dart:developer' as developer;
 
+import 'package:restaurant_app/shared/app_enum.dart';
+
 part 'food_event.dart';
 part 'food_state.dart';
 part 'food_bloc.freezed.dart';
@@ -13,13 +15,14 @@ class FoodBloc extends Bloc<FoodEvent, FoodState> {
     on<_FoodLoadEvent>((event, emit) async {
       try {
         emit(state.copyWith(blocState: BlocState.loading));
+        //TODO dleurs(#4): Better to use Usecase, Repo and API. For simplicity.
         final snapshot =
             await FirebaseFirestore.instance.collection('food').get();
         final List<Map<String, dynamic>> foodListData =
             snapshot.docs.map((DocumentSnapshot document) {
           return document.data()! as Map<String, dynamic>;
         }).toList();
-        final List<FoodEntity> foodList = listDataToEntity(foodListData);
+        final List<FoodEntity> foodList = foodsDataToEntity(foodListData);
         emit(state.copyWith(
           blocState: BlocState.success,
           allFood: foodList,

@@ -16,7 +16,7 @@ class FoodEntity with _$FoodEntity {
 }
 
 //TODO dleurs(#3): Best to create FoodModel and FoodMapper. Reduced for simplicity.
-List<FoodEntity> listDataToEntity(List<Map<String, dynamic>> listData) {
+List<FoodEntity> foodsDataToEntity(List<Map<String, dynamic>> listData) {
   return listData
       .where((Map<String, dynamic> data) {
         return (data['name'] as String?).isNotNullOrEmpty &&

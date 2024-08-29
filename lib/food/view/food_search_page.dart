@@ -4,6 +4,7 @@ import 'package:restaurant_app/food/domain/food_entity.dart';
 import 'package:restaurant_app/food/view/bloc/food_bloc.dart';
 import 'package:restaurant_app/food/view/food_details_page.dart';
 import 'package:restaurant_app/shared/app_dimensions.dart';
+import 'package:restaurant_app/shared/app_enum.dart';
 
 class FoodSearchPage extends StatefulWidget {
   const FoodSearchPage({super.key});

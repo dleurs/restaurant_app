@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:restaurant_app/book_table/domain/entity/table_entity.dart';
+import 'package:restaurant_app/book_table/view/cubit/tables/tables_cubit.dart';
+import 'package:restaurant_app/main.dart';
 import 'package:restaurant_app/shared/app_dimensions.dart';
 import 'dart:developer' as developer;
 
@@ -127,6 +131,11 @@ class _BookTablePageState extends State<BookTablePage> {
           Center(
             child: CupertinoButton.filled(
                 onPressed: () {
+                  final List<TableEntity> allTables =
+                      context.read<TablesCubit>().state.allTables;
+                  developer.log("allTables : ${allTables.toString()}");
+                  final List<String> allTablesId =
+                      allTables.map((table) => table.id).toList();
                   String reservedSlotDayId =
                       DateFormat("yyyy-MM-dd").format(date);
                   developer.log(reservedSlotDayId);

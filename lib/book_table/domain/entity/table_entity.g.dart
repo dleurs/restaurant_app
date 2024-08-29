@@ -1,23 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'table_reservation_entity.dart';
+part of 'table_entity.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TableReservationEntityImpl _$$TableReservationEntityImplFromJson(
-        Map<String, dynamic> json) =>
-    _$TableReservationEntityImpl(
+_$TableEntityImpl _$$TableEntityImplFromJson(Map<String, dynamic> json) =>
+    _$TableEntityImpl(
+      id: json['id'] as String,
       name: json['name'] as String,
-      reservedBy: json['reservedBy'] as String?,
       numberChair: (json['numberChair'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$TableReservationEntityImplToJson(
-        _$TableReservationEntityImpl instance) =>
+Map<String, dynamic> _$$TableEntityImplToJson(_$TableEntityImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
-      'reservedBy': instance.reservedBy,
       'numberChair': instance.numberChair,
     };

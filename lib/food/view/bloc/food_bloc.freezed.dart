@@ -329,7 +329,6 @@ mixin _$FoodState {
   BlocState get blocState => throw _privateConstructorUsedError;
   List<FoodEntity> get allFood => throw _privateConstructorUsedError;
   List<FoodEntity> get filteredFood => throw _privateConstructorUsedError;
-  String? get errorMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of FoodState
   /// with the given fields replaced by the non-null parameter values.
@@ -346,8 +345,7 @@ abstract class $FoodStateCopyWith<$Res> {
   $Res call(
       {BlocState blocState,
       List<FoodEntity> allFood,
-      List<FoodEntity> filteredFood,
-      String? errorMessage});
+      List<FoodEntity> filteredFood});
 }
 
 /// @nodoc
@@ -368,7 +366,6 @@ class _$FoodStateCopyWithImpl<$Res, $Val extends FoodState>
     Object? blocState = null,
     Object? allFood = null,
     Object? filteredFood = null,
-    Object? errorMessage = freezed,
   }) {
     return _then(_value.copyWith(
       blocState: null == blocState
@@ -383,10 +380,6 @@ class _$FoodStateCopyWithImpl<$Res, $Val extends FoodState>
           ? _value.filteredFood
           : filteredFood // ignore: cast_nullable_to_non_nullable
               as List<FoodEntity>,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 }
@@ -402,8 +395,7 @@ abstract class _$$FoodStateImplCopyWith<$Res>
   $Res call(
       {BlocState blocState,
       List<FoodEntity> allFood,
-      List<FoodEntity> filteredFood,
-      String? errorMessage});
+      List<FoodEntity> filteredFood});
 }
 
 /// @nodoc
@@ -422,7 +414,6 @@ class __$$FoodStateImplCopyWithImpl<$Res>
     Object? blocState = null,
     Object? allFood = null,
     Object? filteredFood = null,
-    Object? errorMessage = freezed,
   }) {
     return _then(_$FoodStateImpl(
       blocState: null == blocState
@@ -437,10 +428,6 @@ class __$$FoodStateImplCopyWithImpl<$Res>
           ? _value._filteredFood
           : filteredFood // ignore: cast_nullable_to_non_nullable
               as List<FoodEntity>,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -451,8 +438,7 @@ class _$FoodStateImpl implements _FoodState {
   const _$FoodStateImpl(
       {this.blocState = BlocState.init,
       final List<FoodEntity> allFood = const [],
-      final List<FoodEntity> filteredFood = const [],
-      this.errorMessage})
+      final List<FoodEntity> filteredFood = const []})
       : _allFood = allFood,
         _filteredFood = filteredFood;
 
@@ -478,11 +464,8 @@ class _$FoodStateImpl implements _FoodState {
   }
 
   @override
-  final String? errorMessage;
-
-  @override
   String toString() {
-    return 'FoodState(blocState: $blocState, allFood: $allFood, filteredFood: $filteredFood, errorMessage: $errorMessage)';
+    return 'FoodState(blocState: $blocState, allFood: $allFood, filteredFood: $filteredFood)';
   }
 
   @override
@@ -494,9 +477,7 @@ class _$FoodStateImpl implements _FoodState {
                 other.blocState == blocState) &&
             const DeepCollectionEquality().equals(other._allFood, _allFood) &&
             const DeepCollectionEquality()
-                .equals(other._filteredFood, _filteredFood) &&
-            (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
+                .equals(other._filteredFood, _filteredFood));
   }
 
   @override
@@ -504,8 +485,7 @@ class _$FoodStateImpl implements _FoodState {
       runtimeType,
       blocState,
       const DeepCollectionEquality().hash(_allFood),
-      const DeepCollectionEquality().hash(_filteredFood),
-      errorMessage);
+      const DeepCollectionEquality().hash(_filteredFood));
 
   /// Create a copy of FoodState
   /// with the given fields replaced by the non-null parameter values.
@@ -520,8 +500,7 @@ abstract class _FoodState implements FoodState {
   const factory _FoodState(
       {final BlocState blocState,
       final List<FoodEntity> allFood,
-      final List<FoodEntity> filteredFood,
-      final String? errorMessage}) = _$FoodStateImpl;
+      final List<FoodEntity> filteredFood}) = _$FoodStateImpl;
 
   @override
   BlocState get blocState;
@@ -529,8 +508,6 @@ abstract class _FoodState implements FoodState {
   List<FoodEntity> get allFood;
   @override
   List<FoodEntity> get filteredFood;
-  @override
-  String? get errorMessage;
 
   /// Create a copy of FoodState
   /// with the given fields replaced by the non-null parameter values.

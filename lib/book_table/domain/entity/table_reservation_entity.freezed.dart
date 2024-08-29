@@ -21,9 +21,8 @@ TableReservationEntity _$TableReservationEntityFromJson(
 
 /// @nodoc
 mixin _$TableReservationEntity {
-  String get name => throw _privateConstructorUsedError;
+  String get tableId => throw _privateConstructorUsedError;
   String? get reservedBy => throw _privateConstructorUsedError;
-  int get numberChair => throw _privateConstructorUsedError;
 
   /// Serializes this TableReservationEntity to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +40,7 @@ abstract class $TableReservationEntityCopyWith<$Res> {
           $Res Function(TableReservationEntity) then) =
       _$TableReservationEntityCopyWithImpl<$Res, TableReservationEntity>;
   @useResult
-  $Res call({String name, String? reservedBy, int numberChair});
+  $Res call({String tableId, String? reservedBy});
 }
 
 /// @nodoc
@@ -60,23 +59,18 @@ class _$TableReservationEntityCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
+    Object? tableId = null,
     Object? reservedBy = freezed,
-    Object? numberChair = null,
   }) {
     return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      tableId: null == tableId
+          ? _value.tableId
+          : tableId // ignore: cast_nullable_to_non_nullable
               as String,
       reservedBy: freezed == reservedBy
           ? _value.reservedBy
           : reservedBy // ignore: cast_nullable_to_non_nullable
               as String?,
-      numberChair: null == numberChair
-          ? _value.numberChair
-          : numberChair // ignore: cast_nullable_to_non_nullable
-              as int,
     ) as $Val);
   }
 }
@@ -90,7 +84,7 @@ abstract class _$$TableReservationEntityImplCopyWith<$Res>
       __$$TableReservationEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String? reservedBy, int numberChair});
+  $Res call({String tableId, String? reservedBy});
 }
 
 /// @nodoc
@@ -108,46 +102,39 @@ class __$$TableReservationEntityImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
+    Object? tableId = null,
     Object? reservedBy = freezed,
-    Object? numberChair = null,
   }) {
     return _then(_$TableReservationEntityImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      tableId: null == tableId
+          ? _value.tableId
+          : tableId // ignore: cast_nullable_to_non_nullable
               as String,
       reservedBy: freezed == reservedBy
           ? _value.reservedBy
           : reservedBy // ignore: cast_nullable_to_non_nullable
               as String?,
-      numberChair: null == numberChair
-          ? _value.numberChair
-          : numberChair // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$TableReservationEntityImpl implements _TableReservationEntity {
-  const _$TableReservationEntityImpl(
-      {required this.name, this.reservedBy, required this.numberChair});
+class _$TableReservationEntityImpl extends _TableReservationEntity {
+  const _$TableReservationEntityImpl({required this.tableId, this.reservedBy})
+      : super._();
 
   factory _$TableReservationEntityImpl.fromJson(Map<String, dynamic> json) =>
       _$$TableReservationEntityImplFromJson(json);
 
   @override
-  final String name;
+  final String tableId;
   @override
   final String? reservedBy;
-  @override
-  final int numberChair;
 
   @override
   String toString() {
-    return 'TableReservationEntity(name: $name, reservedBy: $reservedBy, numberChair: $numberChair)';
+    return 'TableReservationEntity(tableId: $tableId, reservedBy: $reservedBy)';
   }
 
   @override
@@ -155,16 +142,14 @@ class _$TableReservationEntityImpl implements _TableReservationEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TableReservationEntityImpl &&
-            (identical(other.name, name) || other.name == name) &&
+            (identical(other.tableId, tableId) || other.tableId == tableId) &&
             (identical(other.reservedBy, reservedBy) ||
-                other.reservedBy == reservedBy) &&
-            (identical(other.numberChair, numberChair) ||
-                other.numberChair == numberChair));
+                other.reservedBy == reservedBy));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, name, reservedBy, numberChair);
+  int get hashCode => Object.hash(runtimeType, tableId, reservedBy);
 
   /// Create a copy of TableReservationEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -183,21 +168,19 @@ class _$TableReservationEntityImpl implements _TableReservationEntity {
   }
 }
 
-abstract class _TableReservationEntity implements TableReservationEntity {
+abstract class _TableReservationEntity extends TableReservationEntity {
   const factory _TableReservationEntity(
-      {required final String name,
-      final String? reservedBy,
-      required final int numberChair}) = _$TableReservationEntityImpl;
+      {required final String tableId,
+      final String? reservedBy}) = _$TableReservationEntityImpl;
+  const _TableReservationEntity._() : super._();
 
   factory _TableReservationEntity.fromJson(Map<String, dynamic> json) =
       _$TableReservationEntityImpl.fromJson;
 
   @override
-  String get name;
+  String get tableId;
   @override
   String? get reservedBy;
-  @override
-  int get numberChair;
 
   /// Create a copy of TableReservationEntity
   /// with the given fields replaced by the non-null parameter values.

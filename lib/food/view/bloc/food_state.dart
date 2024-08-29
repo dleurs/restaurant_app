@@ -6,13 +6,5 @@ class FoodState with _$FoodState {
     @Default(BlocState.init) BlocState blocState,
     @Default([]) List<FoodEntity> allFood,
     @Default([]) List<FoodEntity> filteredFood,
-    String? errorMessage,
   }) = _FoodState;
-}
-
-enum BlocState {
-  init,
-  success,
-  loading,
-  error,
 }
