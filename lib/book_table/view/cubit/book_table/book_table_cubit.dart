@@ -17,9 +17,12 @@ class BookTableCubit extends Cubit<BookTableState> {
   BookTableCubit({
     required String reservedSlotDay,
     required String reservedSlotHour,
+    required List<String> tablesId,
   }) : super(BookTableState(
-            reservedSlotDay: reservedSlotDay,
-            reservedSlotHour: reservedSlotHour));
+          reservedSlotDay: reservedSlotDay,
+          reservedSlotHour: reservedSlotHour,
+          tablesId: tablesId,
+        ));
 
   Future<void> getReservations() async {
     emit(state.copyWith(blocState: BlocState.loading));

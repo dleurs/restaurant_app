@@ -12,6 +12,9 @@ class TablesCubit extends Cubit<TablesState> {
   TablesCubit() : super(const TablesState());
 
   Future<void> getAllTables() async {
+    if (state.blocState == BlocState.loading) {
+      return;
+    }
     emit(state.copyWith(blocState: BlocState.loading));
     try {
       //TODO dleurs(#4): Better to use Usecase, Repo and API. For simplicity.

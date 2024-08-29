@@ -12,7 +12,6 @@ import 'package:restaurant_app/book_table/view/cubit/tables/tables_cubit.dart';
 import 'package:restaurant_app/food/view/bloc/food_bloc.dart';
 import 'package:restaurant_app/food/view/food_search_page.dart';
 import 'firebase_options.dart';
-import 'dart:developer' as developer;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,12 +26,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ScaffoldMessenger(
-      child: CupertinoApp(
-        title: 'Flutter Demo',
-        theme: CupertinoThemeData(brightness: Brightness.light),
-        home: AppScaffold(title: 'Restaurant app'),
-      ),
+    return const CupertinoApp(
+      title: 'Restaurant App',
+      theme: CupertinoThemeData(brightness: Brightness.light),
+      home: AppScaffold(title: 'Restaurant app'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -84,7 +82,7 @@ class _AppScaffoldState extends State<AppScaffold> {
         if (index == 0) {
           return CupertinoTabView(
             builder: (BuildContext context) {
-              return BlocProvider(
+              return BlocProvider<FoodBloc>(
                 create: (context) => FoodBloc()..add(const FoodEvent.load()),
                 child: const FoodSearchPage(),
               );
@@ -93,8 +91,9 @@ class _AppScaffoldState extends State<AppScaffold> {
         }
         return CupertinoTabView(
           builder: (BuildContext context) {
-            return BlocProvider(
-              create: (context) => TablesCubit()..getAllTables(),
+            return BlocProvider<TablesCubit>(
+              create: (context) => TablesCubit(),
+              //TODO dleurs(#4): TablesCubit()..getAllTables() not triggering. To investigate
               child: const BookTablePage(),
             );
           },

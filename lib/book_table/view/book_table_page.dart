@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:restaurant_app/book_table/domain/entity/table_entity.dart';
+import 'package:restaurant_app/book_table/view/cubit/book_table/book_table_cubit.dart';
 import 'package:restaurant_app/book_table/view/cubit/tables/tables_cubit.dart';
-import 'package:restaurant_app/main.dart';
+import 'package:restaurant_app/book_table/view/reservation_page.dart';
 import 'package:restaurant_app/shared/app_dimensions.dart';
 import 'dart:developer' as developer;
+
+import 'package:restaurant_app/shared/app_utils.dart';
 
 class BookTablePage extends StatefulWidget {
   const BookTablePage({super.key});
@@ -20,6 +23,7 @@ class _BookTablePageState extends State<BookTablePage> {
 
   @override
   void initState() {
+    context.read<TablesCubit>().getAllTables();
     final now = DateTime.now();
     date = now;
     time = now;
@@ -64,7 +68,7 @@ class _BookTablePageState extends State<BookTablePage> {
               right: appHorizontalPadding,
             ),
             child: Text(
-              "Book a table",
+              "When to book ?",
               style:
                   CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
             ),
@@ -134,15 +138,38 @@ class _BookTablePageState extends State<BookTablePage> {
                   final List<TableEntity> allTables =
                       context.read<TablesCubit>().state.allTables;
                   developer.log("allTables : ${allTables.toString()}");
-                  final List<String> allTablesId =
-                      allTables.map((table) => table.id).toList();
-                  String reservedSlotDayId =
-                      DateFormat("yyyy-MM-dd").format(date);
-                  developer.log(reservedSlotDayId);
-                  String reservedSlotHourId = DateFormat("HH").format(time);
-                  developer.log(reservedSlotHourId);
+                  if (allTables.isEmpty) {
+                    showCupertinoSnackBar(
+                      context,
+                      message:
+                          "An error occured, do you have internet ?\nPlease try again.",
+                    );
+                    context.read<TablesCubit>().getAllTables();
+                  } else {
+                    final List<String> tablesId =
+                        allTables.map((table) => table.id).toList();
+                    final String reservedSlotDay =
+                        DateFormat("yyyy-MM-dd").format(date);
+                    developer.log(reservedSlotDay);
+                    final String reservedSlotHour =
+                        DateFormat("HH").format(time);
+                    developer.log(reservedSlotHour);
+                    Navigator.of(context).push(
+                      CupertinoPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (context) => BookTableCubit(
+                            reservedSlotDay: reservedSlotDay,
+                            reservedSlotHour: reservedSlotHour,
+                            tablesId: tablesId,
+                          ),
+                          //TODO dleurs(#4): ..getReservations() not triggering, investigate
+                          child: const ReservationPage(),
+                        ),
+                      ),
+                    );
+                  }
                 },
-                child: const Text("Book a table")),
+                child: const Text("Search a table")),
           ),
           const Expanded(flex: 2, child: SizedBox.shrink()),
         ],

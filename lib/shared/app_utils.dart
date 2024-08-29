@@ -1,22 +1,84 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-void showSnackBar(BuildContext context, String title,
-    {Duration duration = const Duration(milliseconds: 4000)}) {
-  if (context.mounted) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: duration,
-        content: SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 16.0),
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: Colors.white),
+void showCupertinoSnackBar(
+  BuildContext context, {
+  required String message,
+  int durationMillis = 3000,
+}) {
+  const animationDurationMillis = 300;
+  final overlayEntry = OverlayEntry(
+    builder: (context) => _CupertinoSnackBar(
+      message: message,
+      animationDurationMillis: animationDurationMillis,
+      waitDurationMillis: durationMillis,
+    ),
+  );
+  Future.delayed(
+    Duration(milliseconds: durationMillis + 2 * animationDurationMillis),
+    overlayEntry.remove,
+  );
+  Overlay.of(Navigator.of(context).context).insert(overlayEntry);
+}
+
+class _CupertinoSnackBar extends StatefulWidget {
+  final String message;
+  final int animationDurationMillis;
+  final int waitDurationMillis;
+
+  const _CupertinoSnackBar({
+    super.key,
+    required this.message,
+    required this.animationDurationMillis,
+    required this.waitDurationMillis,
+  });
+
+  @override
+  State<_CupertinoSnackBar> createState() => _CupertinoSnackBarState();
+}
+
+class _CupertinoSnackBarState extends State<_CupertinoSnackBar> {
+  bool _show = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => setState(() => _show = true));
+    Future.delayed(
+      Duration(
+        milliseconds: widget.waitDurationMillis,
+      ),
+      () {
+        if (mounted) {
+          setState(() => _show = false);
+        }
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPositioned(
+      bottom: _show ? 60.0 : -50.0,
+      left: 8.0,
+      right: 8.0,
+      curve: _show ? Curves.linearToEaseOut : Curves.easeInToLinear,
+      duration: Duration(milliseconds: widget.animationDurationMillis),
+      child: CupertinoPopupSurface(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: 8.0,
           ),
-        ))));
+          child: Text(
+            widget.message,
+            style: const TextStyle(
+              fontSize: 14.0,
+              color: CupertinoColors.secondaryLabel,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -66,7 +66,7 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                           return const Center(
                               child: CupertinoActivityIndicator());
                         case BlocState.error:
-                          return const Text("En error occured");
+                          return const Text("An error occured");
                         case BlocState.success:
                           return Column(
                             children: [
