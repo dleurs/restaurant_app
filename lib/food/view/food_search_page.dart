@@ -66,7 +66,12 @@ class _FoodSearchPageState extends State<FoodSearchPage> {
                           return const Center(
                               child: CupertinoActivityIndicator());
                         case BlocState.error:
-                          return const Text("An error occured");
+                          return const Center(
+                            child: Text(
+                              "An error occured.\nDo you have internet ?",
+                              textAlign: TextAlign.center,
+                            ),
+                          );
                         case BlocState.success:
                           return Column(
                             children: [

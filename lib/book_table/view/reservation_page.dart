@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:restaurant_app/book_table/view/book_table_button.dart';
 import 'package:restaurant_app/book_table/view/cubit/book_table/book_table_cubit.dart';
 import 'package:restaurant_app/shared/app_dimensions.dart';
 import 'package:restaurant_app/shared/app_enum.dart';
@@ -39,20 +40,27 @@ class _ReservationPageState extends State<ReservationPage> {
               case BlocState.loading:
                 return const Center(child: CupertinoActivityIndicator());
               case BlocState.error:
-                return const Text("An error occured");
+                return const Center(
+                  child: Text(
+                    "An error occured.\nDo you have internet ?",
+                    textAlign: TextAlign.center,
+                  ),
+                );
               case BlocState.success:
-                return const Column(
+                return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: appHorizontalPadding,
                       ),
                       child: Text(
-                        "Hello World",
+                        "Available tables for ${state.reservedSlotDay} at ${state.reservedSlotHour}h :",
                         textAlign: TextAlign.justify,
                       ),
                     ),
+                    ...state.tablesId
+                        .map((tableId) => BookTableButton(tableId: tableId)),
                   ],
                 );
             }

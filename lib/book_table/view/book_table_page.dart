@@ -156,14 +156,17 @@ class _BookTablePageState extends State<BookTablePage> {
                     developer.log(reservedSlotHour);
                     Navigator.of(context).push(
                       CupertinoPageRoute(
-                        builder: (context) => BlocProvider(
+                        builder: (context) => BlocProvider<BookTableCubit>(
                           create: (context) => BookTableCubit(
                             reservedSlotDay: reservedSlotDay,
                             reservedSlotHour: reservedSlotHour,
                             tablesId: tablesId,
                           ),
                           //TODO dleurs(#4): ..getReservations() not triggering, investigate
-                          child: const ReservationPage(),
+                          child: BlocProvider<TablesCubit>(
+                            create: (context) => context.read<TablesCubit>(),
+                            child: const ReservationPage(),
+                          ),
                         ),
                       ),
                     );
