@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:restaurant_app/book_table/domain/entity/table_entity.dart';
 import 'package:restaurant_app/book_table/domain/entity/table_reservation_entity.dart';
 import 'package:restaurant_app/book_table/view/book_table_button.dart';
@@ -65,13 +66,20 @@ class _ReservationPageState extends State<ReservationPage> {
                             padding: const EdgeInsets.only(
                               right: appHorizontalPadding,
                               left: appHorizontalPadding,
-                              top: 50,
+                              top: 40,
                               bottom: appHorizontalPadding,
                             ),
-                            child: Text(
-                              "Available tables for ${state.reservedSlotDay} at ${state.reservedSlotHour}h :",
-                              textAlign: TextAlign.justify,
-                            ),
+                            child: Builder(builder: (context) {
+                              final dateTime = DateFormat("yyyy-MM-dd-HH").parse(
+                                  "${state.reservedSlotDay}-${state.reservedSlotHour}");
+                              final dateString =
+                                  DateFormat("EEEE dd LLLL yyyy 'at' HH'h'")
+                                      .format(dateTime);
+                              return Text(
+                                "Available tables for\n$dateString :",
+                                textAlign: TextAlign.center,
+                              );
+                            }),
                           ),
                           ...tables.map((table) => Padding(
                                 padding: const EdgeInsets.symmetric(

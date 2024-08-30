@@ -11,6 +11,7 @@ import 'package:restaurant_app/book_table/view/cubit/tables/tables_cubit.dart';
 import 'dart:developer' as developer;
 
 import 'package:restaurant_app/shared/app_enum.dart';
+import 'package:restaurant_app/shared/app_utils.dart';
 
 class BookTableButton extends StatelessWidget {
   final String reservedSlotDay;
@@ -34,61 +35,79 @@ class BookTableButton extends StatelessWidget {
         reservedSlotHour: reservedSlotHour,
         tableId: table.id,
       ),
-      child: BlocBuilder<BookTableCubit, BookTableState>(
-        builder: (context, state) {
-          return CupertinoButton.filled(
-            onPressed:
-                tableReservation.canModifyReservation(currentFirebaseUserId)
-                    ? () {
-                        if (tableReservation.reservedBy.isNullOrEmpty) {
-                          context.read<BookTableCubit>().bookTheTable(
-                                tableId: table.id,
-                                userId: currentFirebaseUserId,
-                              );
-                        } else {
-                          context.read<BookTableCubit>().unbookTheTable(
-                                tableId: table.id,
-                                userId: currentFirebaseUserId,
-                              );
-                        }
-                      }
-                    : null,
-            child: Column(
-              children: [
-                Text(
-                  "Table with ${table.numberChair} chair${(table.numberChair > 1) ? "s" : ""}",
-                ),
-                const SizedBox(height: 10),
-                Builder(builder: (context) {
-                  String text = "";
-                  switch (state.blocState) {
-                    case BlocState.loading:
-                      return CupertinoActivityIndicator(
-                        color: CupertinoTheme.of(context).barBackgroundColor,
-                      );
-                    case BlocState.init:
-                    case BlocState.success:
-                      if (tableReservation.reservedBy == null) {
-                        text = "Reserve this table";
-                      } else if (tableReservation.reservedBy ==
-                          currentFirebaseUserId) {
-                        text = "You reserved this table\nCancel";
-                      } else {
-                        text = "Someone else reserved this table";
-                      }
-                    case BlocState.error:
-                      return const Text("An error occured");
-                  }
-
-                  return Text(
-                    text,
-                    textAlign: TextAlign.center,
-                  );
-                }),
-              ],
-            ),
+      child: BlocListener<BookTableCubit, BookTableState>(
+        listenWhen: (_, current) => current.blocState == BlocState.error,
+        listener: (context, state) {
+          showCupertinoSnackBar(
+            context,
+            message:
+                "An error occured, do you have internet ?\nPlease try again.",
           );
         },
+        child: BlocBuilder<BookTableCubit, BookTableState>(
+          builder: (context, state) {
+            return CupertinoButton.filled(
+              disabledColor: CupertinoColors.systemGrey,
+              onPressed:
+                  tableReservation.canModifyReservation(currentFirebaseUserId)
+                      ? () {
+                          if (tableReservation.reservedBy.isNullOrEmpty) {
+                            context.read<BookTableCubit>().bookTheTable(
+                                  tableId: table.id,
+                                  userId: currentFirebaseUserId,
+                                );
+                          } else {
+                            context.read<BookTableCubit>().unbookTheTable(
+                                  tableId: table.id,
+                                  userId: currentFirebaseUserId,
+                                );
+                          }
+                        }
+                      : null,
+              child: Column(
+                children: [
+                  Text(
+                    "Table with ${table.numberChair} chair${(table.numberChair > 1) ? "s" : ""}",
+                  ),
+                  const SizedBox(height: 10),
+                  Builder(builder: (context) {
+                    String text = "";
+                    switch (state.blocState) {
+                      case BlocState.loading:
+                        return const CupertinoActivityIndicator(
+                          color: CupertinoColors.white,
+                        );
+                      case BlocState.init:
+                      case BlocState.success:
+                      case BlocState.error:
+                        if (tableReservation.reservedBy == null) {
+                          text = "Reserve this table";
+                        } else if (tableReservation.reservedBy ==
+                            currentFirebaseUserId) {
+                          text = "Reserved";
+                        } else {
+                          text = "Someone else\nreserved this table";
+                        }
+                    }
+                    return Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      style:
+                          tableReservation.reservedBy == currentFirebaseUserId
+                              ? CupertinoTheme.of(context)
+                                  .textTheme
+                                  .navLargeTitleTextStyle
+                                  .copyWith(
+                                    color: CupertinoColors.white,
+                                  )
+                              : null,
+                    );
+                  }),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
