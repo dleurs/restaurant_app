@@ -146,8 +146,6 @@ class _BookTablePageState extends State<BookTablePage> {
                     );
                     context.read<TablesCubit>().getAllTables();
                   } else {
-                    final List<String> tablesId =
-                        allTables.map((table) => table.id).toList();
                     final String reservedSlotDay =
                         DateFormat("yyyy-MM-dd").format(date);
                     developer.log(reservedSlotDay);
@@ -163,7 +161,6 @@ class _BookTablePageState extends State<BookTablePage> {
                                 create: (context) => BookTableCubit(
                                       reservedSlotDay: reservedSlotDay,
                                       reservedSlotHour: reservedSlotHour,
-                                      tablesId: tablesId,
                                     )),
                             BlocProvider(
                               //TODO dleurs(#4): This way of passing cubit can be removed with proper navigation system

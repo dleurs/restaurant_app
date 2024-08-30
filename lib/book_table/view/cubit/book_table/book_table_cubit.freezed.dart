@@ -19,7 +19,6 @@ mixin _$BookTableState {
   BlocState get blocState => throw _privateConstructorUsedError;
   String get reservedSlotDay => throw _privateConstructorUsedError;
   String get reservedSlotHour => throw _privateConstructorUsedError;
-  List<String> get tablesId => throw _privateConstructorUsedError;
   List<TableReservationEntity> get tableReservation =>
       throw _privateConstructorUsedError;
 
@@ -40,7 +39,6 @@ abstract class $BookTableStateCopyWith<$Res> {
       {BlocState blocState,
       String reservedSlotDay,
       String reservedSlotHour,
-      List<String> tablesId,
       List<TableReservationEntity> tableReservation});
 }
 
@@ -62,7 +60,6 @@ class _$BookTableStateCopyWithImpl<$Res, $Val extends BookTableState>
     Object? blocState = null,
     Object? reservedSlotDay = null,
     Object? reservedSlotHour = null,
-    Object? tablesId = null,
     Object? tableReservation = null,
   }) {
     return _then(_value.copyWith(
@@ -78,10 +75,6 @@ class _$BookTableStateCopyWithImpl<$Res, $Val extends BookTableState>
           ? _value.reservedSlotHour
           : reservedSlotHour // ignore: cast_nullable_to_non_nullable
               as String,
-      tablesId: null == tablesId
-          ? _value.tablesId
-          : tablesId // ignore: cast_nullable_to_non_nullable
-              as List<String>,
       tableReservation: null == tableReservation
           ? _value.tableReservation
           : tableReservation // ignore: cast_nullable_to_non_nullable
@@ -102,7 +95,6 @@ abstract class _$$BookTableStateImplCopyWith<$Res>
       {BlocState blocState,
       String reservedSlotDay,
       String reservedSlotHour,
-      List<String> tablesId,
       List<TableReservationEntity> tableReservation});
 }
 
@@ -122,7 +114,6 @@ class __$$BookTableStateImplCopyWithImpl<$Res>
     Object? blocState = null,
     Object? reservedSlotDay = null,
     Object? reservedSlotHour = null,
-    Object? tablesId = null,
     Object? tableReservation = null,
   }) {
     return _then(_$BookTableStateImpl(
@@ -138,10 +129,6 @@ class __$$BookTableStateImplCopyWithImpl<$Res>
           ? _value.reservedSlotHour
           : reservedSlotHour // ignore: cast_nullable_to_non_nullable
               as String,
-      tablesId: null == tablesId
-          ? _value._tablesId
-          : tablesId // ignore: cast_nullable_to_non_nullable
-              as List<String>,
       tableReservation: null == tableReservation
           ? _value._tableReservation
           : tableReservation // ignore: cast_nullable_to_non_nullable
@@ -157,10 +144,8 @@ class _$BookTableStateImpl implements _BookTableState {
       {this.blocState = BlocState.init,
       required this.reservedSlotDay,
       required this.reservedSlotHour,
-      required final List<String> tablesId,
       final List<TableReservationEntity> tableReservation = const []})
-      : _tablesId = tablesId,
-        _tableReservation = tableReservation;
+      : _tableReservation = tableReservation;
 
   @override
   @JsonKey()
@@ -169,14 +154,6 @@ class _$BookTableStateImpl implements _BookTableState {
   final String reservedSlotDay;
   @override
   final String reservedSlotHour;
-  final List<String> _tablesId;
-  @override
-  List<String> get tablesId {
-    if (_tablesId is EqualUnmodifiableListView) return _tablesId;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_tablesId);
-  }
-
   final List<TableReservationEntity> _tableReservation;
   @override
   @JsonKey()
@@ -189,7 +166,7 @@ class _$BookTableStateImpl implements _BookTableState {
 
   @override
   String toString() {
-    return 'BookTableState(blocState: $blocState, reservedSlotDay: $reservedSlotDay, reservedSlotHour: $reservedSlotHour, tablesId: $tablesId, tableReservation: $tableReservation)';
+    return 'BookTableState(blocState: $blocState, reservedSlotDay: $reservedSlotDay, reservedSlotHour: $reservedSlotHour, tableReservation: $tableReservation)';
   }
 
   @override
@@ -203,19 +180,13 @@ class _$BookTableStateImpl implements _BookTableState {
                 other.reservedSlotDay == reservedSlotDay) &&
             (identical(other.reservedSlotHour, reservedSlotHour) ||
                 other.reservedSlotHour == reservedSlotHour) &&
-            const DeepCollectionEquality().equals(other._tablesId, _tablesId) &&
             const DeepCollectionEquality()
                 .equals(other._tableReservation, _tableReservation));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      blocState,
-      reservedSlotDay,
-      reservedSlotHour,
-      const DeepCollectionEquality().hash(_tablesId),
-      const DeepCollectionEquality().hash(_tableReservation));
+  int get hashCode => Object.hash(runtimeType, blocState, reservedSlotDay,
+      reservedSlotHour, const DeepCollectionEquality().hash(_tableReservation));
 
   /// Create a copy of BookTableState
   /// with the given fields replaced by the non-null parameter values.
@@ -232,7 +203,6 @@ abstract class _BookTableState implements BookTableState {
           {final BlocState blocState,
           required final String reservedSlotDay,
           required final String reservedSlotHour,
-          required final List<String> tablesId,
           final List<TableReservationEntity> tableReservation}) =
       _$BookTableStateImpl;
 
@@ -242,8 +212,6 @@ abstract class _BookTableState implements BookTableState {
   String get reservedSlotDay;
   @override
   String get reservedSlotHour;
-  @override
-  List<String> get tablesId;
   @override
   List<TableReservationEntity> get tableReservation;
 

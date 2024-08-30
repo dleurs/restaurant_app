@@ -18,7 +18,8 @@ class TableReservationEntity with _$TableReservationEntity {
   // Required for methods
   const TableReservationEntity._();
 
-  bool canModify(String userId) => reservedBy == null || reservedBy == userId;
+  bool canModifyReservation(String? userId) =>
+      userId != null && (reservedBy == null || reservedBy == userId);
 }
 
 //TODO dleurs(#4): Best to create TableReservationModel and TableReservationMapper. Reduced for simplicity.

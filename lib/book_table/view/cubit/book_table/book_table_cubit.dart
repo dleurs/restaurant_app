@@ -17,11 +17,9 @@ class BookTableCubit extends Cubit<BookTableState> {
   BookTableCubit({
     required String reservedSlotDay,
     required String reservedSlotHour,
-    required List<String> tablesId,
   }) : super(BookTableState(
           reservedSlotDay: reservedSlotDay,
           reservedSlotHour: reservedSlotHour,
-          tablesId: tablesId,
         ));
 
   Future<void> getReservations() async {
@@ -45,6 +43,25 @@ class BookTableCubit extends Cubit<BookTableState> {
         blocState: BlocState.success,
         tableReservation: tableReservationList,
       ));
+    } catch (e) {
+      developer.log("Issue getReservations() : $e");
+      emit(state.copyWith(blocState: BlocState.error));
+    }
+  }
+
+  Future<void> bookTheTable(
+      {required String tableId, required String userId}) async {
+    emit(state.copyWith(blocState: BlocState.loading));
+    try {
+      //TODO dleurs(#4): Better to use Usecase, Repo and API. For simplicity.
+      final snapshot = await FirebaseFirestore.instance
+          .collection(reservedSlotDayDbName)
+          .doc(state.reservedSlotDay)
+          .collection(reservedSlotHourDbName)
+          .doc(state.reservedSlotHour)
+          .collection(tableReservationDbName)
+          .doc()
+          .set({'': ''});
     } catch (e) {
       developer.log("Issue getReservations() : $e");
       emit(state.copyWith(blocState: BlocState.error));

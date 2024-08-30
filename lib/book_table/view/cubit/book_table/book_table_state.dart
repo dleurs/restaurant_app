@@ -6,7 +6,6 @@ class BookTableState with _$BookTableState {
     @Default(BlocState.init) BlocState blocState,
     required String reservedSlotDay,
     required String reservedSlotHour,
-    required List<String> tablesId,
     @Default([]) List<TableReservationEntity> tableReservation,
   }) = _BookTableState;
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:restaurant_app/book_table/domain/entity/table_entity.dart';
 import 'package:restaurant_app/book_table/view/book_table_button.dart';
 import 'package:restaurant_app/book_table/view/cubit/book_table/book_table_cubit.dart';
+import 'package:restaurant_app/book_table/view/cubit/tables/tables_cubit.dart';
 import 'package:restaurant_app/shared/app_dimensions.dart';
 import 'package:restaurant_app/shared/app_enum.dart';
 
@@ -48,29 +50,37 @@ class _ReservationPageState extends State<ReservationPage> {
                 );
               case BlocState.success:
                 return SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(width: double.infinity),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          right: appHorizontalPadding,
-                          left: appHorizontalPadding,
-                          top: 50,
-                          bottom: appHorizontalPadding,
-                        ),
-                        child: Text(
-                          "Available tables for ${state.reservedSlotDay} at ${state.reservedSlotHour}h :",
-                          textAlign: TextAlign.justify,
-                        ),
-                      ),
-                      ...state.tablesId.map((tableId) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
+                  child:
+                      BlocSelector<TablesCubit, TablesState, List<TableEntity>>(
+                    selector: (state) {
+                      return state.allTables;
+                    },
+                    builder: (context, tables) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(width: double.infinity),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              right: appHorizontalPadding,
+                              left: appHorizontalPadding,
+                              top: 50,
+                              bottom: appHorizontalPadding,
                             ),
-                            child: BookTableButton(tableId: tableId),
-                          )),
-                    ],
+                            child: Text(
+                              "Available tables for ${state.reservedSlotDay} at ${state.reservedSlotHour}h :",
+                              textAlign: TextAlign.justify,
+                            ),
+                          ),
+                          ...tables.map((table) => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 10,
+                                ),
+                                child: BookTableButton(table: table),
+                              )),
+                        ],
+                      );
+                    },
                   ),
                 );
             }
