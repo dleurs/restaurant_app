@@ -103,36 +103,33 @@ class BookTableButton extends StatelessWidget {
         },
         child: BlocBuilder<BookTableCubit, BookTableState>(
           builder: (context, state) {
-            void bookOrUnbook() {
-              if (tableReservation.reservedBy.isNullOrEmpty) {
-                context.read<BookTableCubit>().bookTheTable(
-                      tableId: table.id,
-                      userId: firebaseId,
-                    );
-              } else {
-                context.read<BookTableCubit>().unbookTheTable(
-                      tableId: table.id,
-                      userId: firebaseId,
-                    );
-              }
-            }
-
             return CupertinoButton.filled(
               disabledColor: CupertinoColors.systemGrey,
               onPressed: tableReservation.canModifyReservation(firebaseId)
                   ? () async {
-                      bool usernameSet = context
+                      bool usernameSet = !context
                           .read<UserCubit>()
                           .state
                           .username
                           .isNullOrEmpty;
-                      if (usernameSet  &&
+                      if (usernameSet == false &&
                           tableReservation.reservedBy != firebaseId) {
                         usernameSet = (await _showAlertDialog(context)) == true;
                       }
-                      if (usernameSet ||
-                          tableReservation.reservedBy == firebaseId) {
-                        bookOrUnbook();
+                      if (!context.mounted) {
+                        return;
+                      }
+                      if (tableReservation.reservedBy.isNullOrEmpty &&
+                          usernameSet) {
+                        context.read<BookTableCubit>().bookTheTable(
+                              tableId: table.id,
+                              userId: firebaseId,
+                            );
+                      } else if (!tableReservation.reservedBy.isNullOrEmpty) {
+                        context.read<BookTableCubit>().unbookTheTable(
+                              tableId: table.id,
+                              userId: firebaseId,
+                            );
                       }
                     }
                   : null,
