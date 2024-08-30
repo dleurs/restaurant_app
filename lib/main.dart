@@ -11,6 +11,7 @@ import 'package:restaurant_app/book_table/view/book_table_page.dart';
 import 'package:restaurant_app/book_table/view/cubit/tables/tables_cubit.dart';
 import 'package:restaurant_app/food/view/bloc/food_bloc.dart';
 import 'package:restaurant_app/food/view/food_search_page.dart';
+import 'package:restaurant_app/user/view/cubit/user_cubit.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -26,11 +27,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
-      title: 'Restaurant App',
-      theme: CupertinoThemeData(brightness: Brightness.light),
-      home: AppScaffold(title: 'Restaurant app'),
-      debugShowCheckedModeBanner: false,
+    return BlocProvider(
+      create: (context) => UserCubit(),
+      child: const CupertinoApp(
+        title: 'Restaurant App',
+        theme: CupertinoThemeData(brightness: Brightness.light),
+        home: AppScaffold(title: 'Restaurant app'),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
@@ -46,19 +50,13 @@ class AppScaffold extends StatefulWidget {
 
 class _AppScaffoldState extends State<AppScaffold> {
   @override
-  Widget build(BuildContext context) {
-    //TODO dleurs(#no-ticket): Better create UserCubit than inside StatefulWidget, but for simplicity.
-    FirebaseAuth.instance.authStateChanges().listen((User? user) async {
-      if (user == null) {
-        await FirebaseAuth.instance.signInAnonymously();
-      } else {
-        await FirebaseFirestore.instance
-            .collection('user')
-            .doc(user.uid)
-            .set({});
-      }
-    });
+  void initState() {
+    context.read<UserCubit>().listenToFirebaseAndFirestore();
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: const <BottomNavigationBarItem>[

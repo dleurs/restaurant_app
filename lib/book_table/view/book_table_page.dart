@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -138,7 +139,8 @@ class _BookTablePageState extends State<BookTablePage> {
                   final List<TableEntity> allTables =
                       context.read<TablesCubit>().state.allTables;
                   developer.log("allTables : ${allTables.toString()}");
-                  if (allTables.isEmpty) {
+                  if (allTables.isEmpty ||
+                      FirebaseAuth.instance.currentUser?.uid == null) {
                     showCupertinoSnackBar(
                       context,
                       message:

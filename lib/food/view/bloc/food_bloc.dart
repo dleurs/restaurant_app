@@ -15,7 +15,7 @@ class FoodBloc extends Bloc<FoodEvent, FoodState> {
     on<_FoodLoadEvent>((event, emit) async {
       try {
         emit(state.copyWith(blocState: BlocState.loading));
-        //TODO dleurs(#4): Better to use Usecase, Repo and API. For simplicity.
+        //TODO dleurs(#3): Better to use Usecase, Repo and API. For simplicity.
         final snapshot =
             await FirebaseFirestore.instance.collection('food').get();
         final List<Map<String, dynamic>> foodListData =
@@ -35,6 +35,7 @@ class FoodBloc extends Bloc<FoodEvent, FoodState> {
         ));
       }
     });
+    //TODO dleurs(#3): Offline filtering. Could be online (with debounce), required if pagination.
     on<_FoodSearchEvent>((event, emit) async {
       emit(state.copyWith(
         filteredFood: List.of(state.allFood)
