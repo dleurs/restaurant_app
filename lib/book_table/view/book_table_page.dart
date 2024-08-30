@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:restaurant_app/book_table/domain/entity/table_entity.dart';
-import 'package:restaurant_app/book_table/view/cubit/book_table/book_table_cubit.dart';
+import 'package:restaurant_app/book_table/view/cubit/tables_reservation/tables_reservation_cubit.dart';
 import 'package:restaurant_app/book_table/view/cubit/tables/tables_cubit.dart';
 import 'package:restaurant_app/book_table/view/reservation_page.dart';
 import 'package:restaurant_app/shared/app_dimensions.dart';
@@ -158,7 +158,7 @@ class _BookTablePageState extends State<BookTablePage> {
                         builder: (context) => MultiBlocProvider(
                           providers: [
                             BlocProvider(
-                                create: (context) => BookTableCubit(
+                                create: (context) => TablesReservationCubit(
                                       reservedSlotDay: reservedSlotDay,
                                       reservedSlotHour: reservedSlotHour,
                                     )),

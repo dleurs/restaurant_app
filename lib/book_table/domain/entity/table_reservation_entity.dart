@@ -21,16 +21,3 @@ class TableReservationEntity with _$TableReservationEntity {
   bool canModifyReservation(String? userId) =>
       userId != null && (reservedBy == null || reservedBy == userId);
 }
-
-//TODO dleurs(#4): Best to create TableReservationModel and TableReservationMapper. Reduced for simplicity.
-List<TableReservationEntity> tableReservationsDataToEntity(
-    List<Map<String, dynamic>> listData) {
-  return listData
-      .where((Map<String, dynamic> data) {
-        return (data['tableId'] as String?).isNotNullOrEmpty &&
-            (data['reservedBy'] as String?).isNotNullOrEmpty;
-      })
-      .map((Map<String, dynamic> cleanedData) =>
-          TableReservationEntity.fromJson(cleanedData))
-      .toList();
-}

@@ -20,13 +20,13 @@ class TablesCubit extends Cubit<TablesState> {
       //TODO dleurs(#4): Better to use Usecase, Repo and API. For simplicity.
       final snapshot =
           await FirebaseFirestore.instance.collection('table').get();
-      final List<Map<String, dynamic>> tableListData =
+      final List<TableEntity> tableList =
           snapshot.docs.map((DocumentSnapshot document) {
+        //TODO dleurs(#4): Better user Model and Mapper
         Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
         data['id'] = document.id;
-        return data;
+        return TableEntity.fromJson(data);
       }).toList();
-      final List<TableEntity> tableList = tablesDataToEntity(tableListData);
       emit(state.copyWith(
         blocState: BlocState.success,
         allTables: tableList,

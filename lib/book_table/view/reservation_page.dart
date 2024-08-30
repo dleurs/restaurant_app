@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:restaurant_app/book_table/domain/entity/table_entity.dart';
+import 'package:restaurant_app/book_table/domain/entity/table_reservation_entity.dart';
 import 'package:restaurant_app/book_table/view/book_table_button.dart';
-import 'package:restaurant_app/book_table/view/cubit/book_table/book_table_cubit.dart';
+import 'package:restaurant_app/book_table/view/cubit/tables_reservation/tables_reservation_cubit.dart';
 import 'package:restaurant_app/book_table/view/cubit/tables/tables_cubit.dart';
 import 'package:restaurant_app/shared/app_dimensions.dart';
 import 'package:restaurant_app/shared/app_enum.dart';
+import 'package:collection/collection.dart';
 
 class ReservationPage extends StatefulWidget {
-  //TODO dleurs(#4): Shame to use Statefull for triggering cubit
   const ReservationPage({
     super.key,
   });
@@ -20,7 +21,7 @@ class ReservationPage extends StatefulWidget {
 class _ReservationPageState extends State<ReservationPage> {
   @override
   void initState() {
-    context.read<BookTableCubit>().getReservations();
+    context.read<TablesReservationCubit>().listenToTablesReservation();
     super.initState();
   }
 
@@ -35,7 +36,7 @@ class _ReservationPageState extends State<ReservationPage> {
         middle: Text("Book a table"),
       ),
       child: SafeArea(
-        child: BlocBuilder<BookTableCubit, BookTableState>(
+        child: BlocBuilder<TablesReservationCubit, TablesReservationState>(
           builder: (context, state) {
             switch (state.blocState) {
               case BlocState.init:
@@ -76,7 +77,17 @@ class _ReservationPageState extends State<ReservationPage> {
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 10,
                                 ),
-                                child: BookTableButton(table: table),
+                                child: BookTableButton(
+                                  table: table,
+                                  reservedSlotDay: state.reservedSlotDay,
+                                  reservedSlotHour: state.reservedSlotHour,
+                                  tableReservation: state.tablesReservation
+                                          .firstWhereOrNull(
+                                              (tableReservation) =>
+                                                  tableReservation.tableId ==
+                                                  table.id) ??
+                                      TableReservationEntity(tableId: table.id),
+                                ),
                               )),
                         ],
                       );
