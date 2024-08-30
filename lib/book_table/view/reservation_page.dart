@@ -8,6 +8,7 @@ import 'package:restaurant_app/book_table/view/cubit/tables_reservation/tables_r
 import 'package:restaurant_app/book_table/view/cubit/tables/tables_cubit.dart';
 import 'package:restaurant_app/shared/app_dimensions.dart';
 import 'package:restaurant_app/shared/app_enum.dart';
+// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 
 class ReservationPage extends StatefulWidget {

@@ -26,7 +26,6 @@ class _CupertinoSnackBar extends StatefulWidget {
   final int waitDurationMillis;
 
   const _CupertinoSnackBar({
-    super.key,
     required this.message,
     required this.animationDurationMillis,
     required this.waitDurationMillis,

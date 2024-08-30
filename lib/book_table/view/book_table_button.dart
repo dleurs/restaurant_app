@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:restaurant_app/book_table/domain/entity/table_entity.dart';
 import 'package:restaurant_app/book_table/domain/entity/table_reservation_entity.dart';
 import 'package:restaurant_app/book_table/view/cubit/book_table/book_table_cubit.dart';
-import 'dart:developer' as developer;
 
 import 'package:restaurant_app/shared/app_enum.dart';
 import 'package:restaurant_app/shared/app_utils.dart';
